@@ -1,10 +1,21 @@
 import { useRouter } from 'expo-router';
 import { useState } from 'react';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Image, ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button, Icon, Input } from '@/components/ui';
-import { Tokens } from '@/constants/tokens';
+import { Box } from '@/components/ui/box';
+import { Button, ButtonText } from '@/components/ui/button';
+import {
+  FormControl,
+  FormControlLabel,
+  FormControlLabelText,
+} from '@/components/ui/form-control';
+import { Heading } from '@/components/ui/heading';
+import { EyeIcon, EyeOffIcon, Icon } from '@/components/ui/icon';
+import { Input, InputField, InputSlot } from '@/components/ui/input';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 
 export default function LoginScreen() {
   const router = useRouter();
@@ -13,142 +24,123 @@ export default function LoginScreen() {
   const [showPassword, setShowPassword] = useState(false);
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top', 'bottom']}>
-      <ScrollView
-        contentContainerStyle={styles.content}
-        keyboardShouldPersistTaps="handled"
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.logo}>
-          <Icon name="goal" size={44} color={Tokens.color.textOnPrimary} />
-        </View>
-
-        <Text style={styles.title}>Bem-vinda ao ElasHub</Text>
-        <Text style={styles.subtitle}>
-          Ferramentas práticas para crescer seu negócio com orientação e foco.
-        </Text>
-
-        <View style={styles.form}>
-          <Input
-            label="E-mail"
-            placeholder="seu@email.com"
-            keyboardType="email-address"
-            autoCapitalize="none"
-            autoComplete="email"
-            value={email}
-            onChangeText={setEmail}
+    <SafeAreaView style={{ flex: 1 }} edges={['top', 'bottom']}>
+      <Box className="flex-1 bg-background-50">
+        <ScrollView
+          contentContainerStyle={{ flexGrow: 1, paddingHorizontal: 24, paddingTop: 24 }}
+          keyboardShouldPersistTaps="handled"
+          showsVerticalScrollIndicator={false}
+        >
+          <Image
+            source={require('../../assets/images/logo-elashub.png')}
+            style={{ width: 200, height: 140, alignSelf: 'center' }}
+            resizeMode="contain"
+            accessibilityLabel="Logo ElasHub"
           />
 
-          <View style={styles.passwordBlock}>
-            <Input
-              label="Senha"
-              placeholder="Sua senha"
-              secureTextEntry={!showPassword}
-              autoCapitalize="none"
-              value={password}
-              onChangeText={setPassword}
-              trailing={
-                <Pressable
-                  onPress={() => setShowPassword((v) => !v)}
-                  accessibilityRole="button"
-                  accessibilityLabel={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
-                  hitSlop={8}
-                >
-                  <Text style={styles.toggle}>
-                    {showPassword ? 'Ocultar' : 'Mostrar'}
-                  </Text>
-                </Pressable>
-              }
-            />
-            <Pressable accessibilityRole="button" hitSlop={8} style={styles.forgot}>
-              <Text style={styles.forgotText}>Esqueci minha senha</Text>
-            </Pressable>
-          </View>
-        </View>
-      </ScrollView>
-
-      <View style={styles.footer}>
-        <Button title="Entrar" onPress={() => router.replace('/home')} />
-        <Pressable
-          accessibilityRole="button"
-          onPress={() => router.push('/cadastro')}
-          style={styles.signup}
-          hitSlop={8}
-        >
-          <Text style={styles.signupText}>
-            Ainda não tem conta? <Text style={styles.signupLink}>Criar conta</Text>
+          <Heading size="2xl" className="mt-4 text-center text-typography-900">
+            Bem-vinda ao ElasHub
+          </Heading>
+          <Text size="md" className="mt-2 text-center text-typography-500">
+            Ferramentas práticas para crescer seu negócio com orientação e foco.
           </Text>
-        </Pressable>
-      </View>
+
+          <VStack space="lg" className="mt-6">
+            <FormControl>
+              <FormControlLabel>
+                <FormControlLabelText className="text-typography-900">
+                  E-mail
+                </FormControlLabelText>
+              </FormControlLabel>
+              <Input
+                size="xl"
+                className="rounded-[14px] border-outline-200 bg-background-100"
+              >
+                <InputField
+                  placeholder="seu@email.com"
+                  keyboardType="email-address"
+                  autoCapitalize="none"
+                  autoComplete="email"
+                  value={email}
+                  onChangeText={setEmail}
+                />
+              </Input>
+            </FormControl>
+
+            <VStack space="sm">
+              <FormControl>
+                <FormControlLabel>
+                  <FormControlLabelText className="text-typography-900">
+                    Senha
+                  </FormControlLabelText>
+                </FormControlLabel>
+                <Input
+                  size="xl"
+                  className="rounded-[14px] border-outline-200 bg-background-100"
+                >
+                  <InputField
+                    placeholder="Sua senha"
+                    secureTextEntry={!showPassword}
+                    autoCapitalize="none"
+                    value={password}
+                    onChangeText={setPassword}
+                  />
+                  <InputSlot
+                    className="pr-4"
+                    onPress={() => setShowPassword((v) => !v)}
+                    accessibilityRole="button"
+                    accessibilityLabel={showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                  >
+                    <Icon
+                      as={showPassword ? EyeOffIcon : EyeIcon}
+                      className="text-typography-500"
+                    />
+                  </InputSlot>
+                </Input>
+              </FormControl>
+              <Pressable
+                accessibilityRole="button"
+                className="self-end"
+                hitSlop={8}
+                onPress={() => router.push('/recuperar-senha')}
+              >
+                <Text size="sm" className="text-typography-500">
+                  Esqueci minha senha
+                </Text>
+              </Pressable>
+            </VStack>
+          </VStack>
+        </ScrollView>
+
+        <VStack space="lg" className="px-6 pt-3">
+          <Button
+            size="xl"
+            action="primary"
+            className="rounded-[14px]"
+            onPress={() => router.replace('/home')}
+          >
+            <ButtonText>Entrar</ButtonText>
+          </Button>
+          <Pressable
+            accessibilityRole="button"
+            onPress={() => router.push('/cadastro')}
+            className="self-center py-1"
+            hitSlop={8}
+          >
+            <Text size="md" className="text-typography-500">
+              Ainda não tem conta?{' '}
+              <Text size="md" bold className="text-primary-500">
+                Criar conta
+              </Text>
+            </Text>
+          </Pressable>
+          <Pressable accessibilityRole="button" className="self-center py-1" hitSlop={8}>
+            <Text size="md" bold className="text-primary-500">
+              Acessar como mentora
+            </Text>
+          </Pressable>
+        </VStack>
+      </Box>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: Tokens.color.background,
-  },
-  content: {
-    flexGrow: 1,
-    paddingHorizontal: Tokens.space.xxl,
-    paddingTop: Tokens.space.xxl,
-  },
-  logo: {
-    width: 96,
-    height: 96,
-    borderRadius: Tokens.radius.xxl,
-    backgroundColor: Tokens.color.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Tokens.space.xl,
-  },
-  title: {
-    fontSize: Tokens.typography.h1.fontSize,
-    lineHeight: Tokens.typography.h1.lineHeight,
-    fontWeight: '700',
-    color: Tokens.color.textStrong,
-  },
-  subtitle: {
-    marginTop: Tokens.space.sm,
-    fontSize: Tokens.typography.body.fontSize,
-    lineHeight: Tokens.typography.body.lineHeight,
-    color: Tokens.color.textSoft,
-  },
-  form: {
-    marginTop: Tokens.space.xxl,
-    gap: Tokens.space.lg,
-  },
-  passwordBlock: {
-    gap: Tokens.space.sm,
-  },
-  toggle: {
-    fontSize: Tokens.typography.label.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.primary,
-  },
-  forgot: {
-    alignSelf: 'flex-end',
-  },
-  forgotText: {
-    fontSize: Tokens.typography.caption.fontSize,
-    color: Tokens.color.textSoft,
-  },
-  footer: {
-    paddingHorizontal: Tokens.space.xxl,
-    paddingTop: Tokens.space.md,
-    gap: Tokens.space.lg,
-  },
-  signup: {
-    alignSelf: 'center',
-    paddingVertical: Tokens.space.xs,
-  },
-  signupText: {
-    fontSize: Tokens.typography.body.fontSize,
-    color: Tokens.color.textSoft,
-  },
-  signupLink: {
-    color: Tokens.color.primary,
-    fontWeight: '700',
-  },
-});

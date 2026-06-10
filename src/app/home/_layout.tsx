@@ -1,7 +1,12 @@
 import { Tabs } from 'expo-router';
 
-import { Icon } from '@/components/ui';
+import { Icons } from '@/constants/icons';
 import { Tokens } from '@/constants/tokens';
+
+const HomeIcon = Icons.home;
+const PlansIcon = Icons.plans;
+const DashboardIcon = Icons.dashboard;
+const ProfileIcon = Icons.profile;
 
 export default function HomeTabsLayout() {
   return (
@@ -12,9 +17,16 @@ export default function HomeTabsLayout() {
         tabBarActiveTintColor: Tokens.color.primary,
         tabBarInactiveTintColor: Tokens.color.textSoft,
         tabBarStyle: {
-          backgroundColor: Tokens.color.surface,
-          borderTopColor: Tokens.color.borderSubtle,
+          position: 'absolute',
+          left: 24,
+          right: 24,
+          bottom: 16,
           height: 64,
+          borderRadius: 22,
+          backgroundColor: Tokens.color.surface,
+          borderTopWidth: 0,
+          borderWidth: 1,
+          borderColor: Tokens.color.borderSubtle,
           paddingTop: 8,
           paddingBottom: 8,
         },
@@ -24,28 +36,28 @@ export default function HomeTabsLayout() {
         name="index"
         options={{
           title: 'Início',
-          tabBarIcon: ({ color }) => <Icon name="home" color={color} />,
+          tabBarIcon: ({ color }) => <HomeIcon size={24} color={color} strokeWidth={2} />,
         }}
       />
       <Tabs.Screen
         name="planos"
         options={{
           title: 'Planos',
-          tabBarIcon: ({ color }) => <Icon name="plans" color={color} />,
+          tabBarIcon: ({ color }) => <PlansIcon size={24} color={color} strokeWidth={2} />,
         }}
       />
       <Tabs.Screen
         name="painel"
         options={{
           title: 'Painel',
-          tabBarIcon: ({ color }) => <Icon name="dashboard" color={color} />,
+          tabBarIcon: ({ color }) => <DashboardIcon size={24} color={color} strokeWidth={2} />,
         }}
       />
       <Tabs.Screen
         name="perfil"
         options={{
           title: 'Perfil',
-          tabBarIcon: ({ color }) => <Icon name="profile" color={color} />,
+          tabBarIcon: ({ color }) => <ProfileIcon size={24} color={color} strokeWidth={2} />,
         }}
       />
     </Tabs>

@@ -41,3 +41,7 @@ example
 # generated native folders
 /ios
 /android
+
+# temporary screenshots / scratch files
+.tmp-*
+scripts/save-clipboard-logo.ps1

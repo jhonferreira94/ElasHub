@@ -1,87 +1,84 @@
 import { useRouter } from 'expo-router';
 import { ChevronRight } from 'lucide-react-native';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { Fragment } from 'react';
+import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Button, Card } from '@/components/ui';
-import { Tokens } from '@/constants/tokens';
+import { Avatar, AvatarFallbackText } from '@/components/ui/avatar';
+import { Box } from '@/components/ui/box';
+import { Card } from '@/components/ui/card';
+import { Divider } from '@/components/ui/divider';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { Icon } from '@/components/ui/icon';
+import { Pressable } from '@/components/ui/pressable';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
 
-const OPTIONS = ['Editar perfil', 'Notificações', 'Privacidade', 'Ajuda'];
+const OPTIONS = ['Editar perfil', 'Notificações', 'Ajuda e suporte'];
 
 export default function PerfilScreen() {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScrollView contentContainerStyle={styles.content} showsVerticalScrollIndicator={false}>
-        <View style={styles.profile}>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>M</Text>
-          </View>
-          <Text style={styles.name}>Marina Souza</Text>
-          <Text style={styles.email}>marina@email.com</Text>
-        </View>
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
+      <Box className="flex-1 bg-background-50">
+        <ScrollView
+          contentContainerStyle={{ padding: 24, paddingBottom: 112, gap: 16 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <Heading size="xl" className="text-typography-900">
+            Perfil
+          </Heading>
 
-        <Card style={styles.menu}>
-          {OPTIONS.map((option, index) => (
+          <Card className="rounded-2xl border border-outline-200 bg-background-0 p-4">
+            <HStack space="lg" className="items-center">
+              <Avatar size="lg" className="bg-primary-50">
+                <AvatarFallbackText className="text-primary-500">
+                  Marina Souza
+                </AvatarFallbackText>
+              </Avatar>
+              <VStack space="xs">
+                <Heading size="md" className="text-typography-900">
+                  Marina Souza
+                </Heading>
+                <Text size="sm" className="text-typography-500">
+                  Mentorada · ElasHub
+                </Text>
+              </VStack>
+            </HStack>
+          </Card>
+
+          <Heading size="md" className="mt-2 text-typography-900">
+            Conta
+          </Heading>
+
+          <Card className="overflow-hidden rounded-2xl border border-outline-200 bg-background-0 p-0">
+            {OPTIONS.map((option) => (
+              <Fragment key={option}>
+                <Pressable accessibilityRole="button" className="px-4 py-4">
+                  <HStack className="items-center justify-between">
+                    <Text size="md" className="text-typography-900">
+                      {option}
+                    </Text>
+                    <Icon as={ChevronRight} size="md" className="text-typography-500" />
+                  </HStack>
+                </Pressable>
+                <Divider className="bg-outline-100" />
+              </Fragment>
+            ))}
             <Pressable
-              key={option}
               accessibilityRole="button"
-              style={[styles.row, index < OPTIONS.length - 1 && styles.rowDivider]}
+              className="px-4 py-4"
+              onPress={() => router.replace('/')}
             >
-              <Text style={styles.rowLabel}>{option}</Text>
-              <ChevronRight size={20} color={Tokens.color.textSoft} strokeWidth={2} />
+              <Text size="md" bold className="text-error-600">
+                Sair
+              </Text>
             </Pressable>
-          ))}
-        </Card>
-
-        <Button title="Sair" variant="secondary" onPress={() => router.replace('/')} />
-      </ScrollView>
+          </Card>
+        </ScrollView>
+      </Box>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safe: { flex: 1, backgroundColor: Tokens.color.background },
-  content: { padding: Tokens.space.xxl, gap: Tokens.space.xl },
-  profile: { alignItems: 'center', gap: Tokens.space.xs, paddingTop: Tokens.space.lg },
-  avatar: {
-    width: 88,
-    height: 88,
-    borderRadius: Tokens.radius.round,
-    backgroundColor: Tokens.color.primaryTint,
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginBottom: Tokens.space.sm,
-  },
-  avatarText: {
-    fontSize: Tokens.typography.h1.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.primary,
-  },
-  name: {
-    fontSize: Tokens.typography.h3.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.textStrong,
-  },
-  email: {
-    fontSize: Tokens.typography.body.fontSize,
-    color: Tokens.color.textSoft,
-  },
-  menu: { padding: 0, overflow: 'hidden' },
-  row: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingVertical: Tokens.space.lg,
-    paddingHorizontal: Tokens.space.lg,
-  },
-  rowDivider: {
-    borderBottomWidth: 1,
-    borderBottomColor: Tokens.color.borderSubtle,
-  },
-  rowLabel: {
-    fontSize: Tokens.typography.bodyStrong.fontSize,
-    color: Tokens.color.textStrong,
-  },
-});

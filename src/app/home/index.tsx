@@ -1,214 +1,122 @@
 import { useRouter } from 'expo-router';
 import { ArrowRight } from 'lucide-react-native';
-import { Pressable, ScrollView, StyleSheet, Text, View } from 'react-native';
+import { ScrollView } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { Card, Icon } from '@/components/ui';
-import { Tokens } from '@/constants/tokens';
+import { Avatar, AvatarFallbackText } from '@/components/ui/avatar';
+import { Box } from '@/components/ui/box';
+import { Card } from '@/components/ui/card';
+import { Center } from '@/components/ui/center';
+import { Heading } from '@/components/ui/heading';
+import { HStack } from '@/components/ui/hstack';
+import { Icon } from '@/components/ui/icon';
+import { Pressable } from '@/components/ui/pressable';
+import { Progress, ProgressFilledTrack } from '@/components/ui/progress';
+import { Text } from '@/components/ui/text';
+import { VStack } from '@/components/ui/vstack';
+import { Icons } from '@/constants/icons';
 
-const PROGRESS = 0.6;
+const PROGRESS = 60;
 
 export default function HomeScreen() {
   const router = useRouter();
 
   return (
-    <SafeAreaView style={styles.safe} edges={['top']}>
-      <ScrollView
-        contentContainerStyle={styles.content}
-        showsVerticalScrollIndicator={false}
-      >
-        <View style={styles.header}>
-          <View>
-            <Text style={styles.greeting}>Bom dia,</Text>
-            <Text style={styles.name}>Marina</Text>
-          </View>
-          <View style={styles.avatar}>
-            <Text style={styles.avatarText}>M</Text>
-          </View>
-        </View>
+    <SafeAreaView style={{ flex: 1 }} edges={['top']}>
+      <Box className="flex-1 bg-background-50">
+        <ScrollView
+          contentContainerStyle={{ padding: 24, paddingBottom: 112, gap: 20 }}
+          showsVerticalScrollIndicator={false}
+        >
+          <HStack className="items-center justify-between">
+            <VStack>
+              <Text size="sm" className="text-[13px] leading-4 text-typography-500">
+                Bom dia,
+              </Text>
+              <Heading size="xl" className="text-[20px] leading-6 text-typography-900">
+                Marina
+              </Heading>
+            </VStack>
+            <Avatar size="md" className="bg-primary-50">
+              <AvatarFallbackText className="text-primary-500">Marina</AvatarFallbackText>
+            </Avatar>
+          </HStack>
 
-        <Card variant="brand" style={styles.devCard}>
-          <View style={styles.devBadge}>
-            <Text style={styles.devBadgeText}>DEVOCIONAL DO DIA</Text>
-          </View>
-          <Text style={styles.devTitle}>Coragem para recomeçar</Text>
-          <Text style={styles.devBody}>
-            “Tudo posso naquele que me fortalece.” Hoje, dê o primeiro passo no que
-            você vem adiando.
-          </Text>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.devLink}
-            hitSlop={8}
-          >
-            <Text style={styles.devLinkText}>Ler reflexão completa</Text>
-            <ArrowRight size={18} color={Tokens.color.textOnPrimary} strokeWidth={2.5} />
-          </Pressable>
-        </Card>
+          <Card className="rounded-2xl bg-primary-500 p-5">
+            <VStack space="md">
+              <Box className="self-start rounded-full bg-background-0/20 px-3 py-1">
+                <Text size="xs" bold className="text-[11px] tracking-wide text-typography-0">
+                  DEVOCIONAL DO DIA
+                </Text>
+              </Box>
+              <Heading size="xl" className="text-[19px] leading-[23px] text-typography-0">
+                Coragem para recomeçar
+              </Heading>
+              <Text size="md" className="text-[14px] leading-[17px] text-typography-0/90">
+                “Tudo posso naquele que me fortalece.” Hoje, dê o primeiro passo no que
+                você vem adiando.
+              </Text>
+              <Pressable accessibilityRole="button" hitSlop={8}>
+                <HStack space="sm" className="mt-1 items-center">
+                  <Text size="md" bold className="text-[14px] text-typography-0">
+                    Ler reflexão completa
+                  </Text>
+                  <Icon as={ArrowRight} size="md" className="text-typography-0" />
+                </HStack>
+              </Pressable>
+            </VStack>
+          </Card>
 
-        <Card style={styles.planCard}>
-          <View style={styles.planTop}>
-            <Text style={styles.planTitle}>Plano: Organização Financeira</Text>
-            <Text style={styles.planPercent}>60%</Text>
-          </View>
-          <View style={styles.track}>
-            <View style={[styles.fill, { width: `${PROGRESS * 100}%` }]} />
-          </View>
-          <Text style={styles.planCaption}>3 de 5 ferramentas concluídas</Text>
-        </Card>
+          <Card className="rounded-2xl border border-outline-200 bg-background-0 p-4">
+            <VStack space="md">
+              <HStack className="items-center justify-between">
+                <Text size="md" bold className="flex-1 text-[15px] text-typography-900">
+                  Plano: Organização Financeira
+                </Text>
+                <Text size="md" bold className="text-[15px] text-primary-500">
+                  {PROGRESS}%
+                </Text>
+              </HStack>
+              <Progress value={PROGRESS} size="sm" className="bg-background-200">
+                <ProgressFilledTrack className="bg-primary-500" />
+              </Progress>
+              <Text size="sm" className="text-[13px] text-typography-500">
+                3 de 5 ferramentas concluídas
+              </Text>
+            </VStack>
+          </Card>
 
-        <Text style={styles.sectionTitle}>Acesso rápido</Text>
-        <View style={styles.quickRow}>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.quickCard}
-            onPress={() => router.push('/home/planos')}
-          >
-            <Icon name="goal" size={28} color={Tokens.color.primary} />
-            <Text style={styles.quickLabel}>Tópicos e metas</Text>
-          </Pressable>
-          <Pressable
-            accessibilityRole="button"
-            style={styles.quickCard}
-            onPress={() => router.push('/home/planos')}
-          >
-            <Icon name="plans" size={28} color={Tokens.color.primary} />
-            <Text style={styles.quickLabel}>Meus planos</Text>
-          </Pressable>
-        </View>
-      </ScrollView>
+          <Heading size="md" className="text-[17px] text-typography-900">
+            Acesso rápido
+          </Heading>
+          <HStack space="lg">
+            <Pressable
+              accessibilityRole="button"
+              className="min-h-[120px] flex-1 justify-between rounded-2xl bg-primary-50 p-4"
+              onPress={() => router.push('/home/planos')}
+            >
+              <Center className="h-11 w-11 rounded-full bg-background-0">
+                <Icon as={Icons.goal} className="h-6 w-6 text-primary-500" />
+              </Center>
+              <Text size="md" className="text-[14px] font-semibold text-typography-900">
+                Tópicos e metas
+              </Text>
+            </Pressable>
+            <Pressable
+              accessibilityRole="button"
+              className="min-h-[120px] flex-1 justify-between rounded-2xl bg-primary-50 p-4"
+              onPress={() => router.push('/home/planos')}
+            >
+              <Center className="h-11 w-11 rounded-full bg-background-0">
+                <Icon as={Icons.plans} className="h-6 w-6 text-primary-500" />
+              </Center>
+              <Text size="md" className="text-[14px] font-semibold text-typography-900">
+                Meus planos
+              </Text>
+            </Pressable>
+          </HStack>
+        </ScrollView>
+      </Box>
     </SafeAreaView>
   );
 }
-
-const styles = StyleSheet.create({
-  safe: {
-    flex: 1,
-    backgroundColor: Tokens.color.background,
-  },
-  content: {
-    padding: Tokens.space.xxl,
-    gap: Tokens.space.xl,
-  },
-  header: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  greeting: {
-    fontSize: Tokens.typography.body.fontSize,
-    color: Tokens.color.textSoft,
-  },
-  name: {
-    fontSize: Tokens.typography.h2.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.textStrong,
-  },
-  avatar: {
-    width: 48,
-    height: 48,
-    borderRadius: Tokens.radius.round,
-    backgroundColor: Tokens.color.primaryTint,
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-  avatarText: {
-    fontSize: Tokens.typography.section.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.primary,
-  },
-  devCard: {
-    gap: Tokens.space.md,
-  },
-  devBadge: {
-    alignSelf: 'flex-start',
-    backgroundColor: 'rgba(255,255,255,0.22)',
-    borderRadius: Tokens.radius.round,
-    paddingVertical: Tokens.space.xs + 1,
-    paddingHorizontal: Tokens.space.md,
-  },
-  devBadgeText: {
-    fontSize: Tokens.typography.label.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.textOnPrimary,
-    letterSpacing: 0.5,
-  },
-  devTitle: {
-    fontSize: Tokens.typography.h2.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.textOnPrimary,
-  },
-  devBody: {
-    fontSize: Tokens.typography.body.fontSize,
-    lineHeight: Tokens.typography.body.lineHeight,
-    color: 'rgba(255,255,255,0.9)',
-  },
-  devLink: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: Tokens.space.sm,
-    marginTop: Tokens.space.xs,
-  },
-  devLinkText: {
-    fontSize: Tokens.typography.bodyStrong.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.textOnPrimary,
-  },
-  planCard: {
-    gap: Tokens.space.md,
-  },
-  planTop: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-  },
-  planTitle: {
-    flex: 1,
-    fontSize: Tokens.typography.bodyStrong.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.textStrong,
-  },
-  planPercent: {
-    fontSize: Tokens.typography.bodyStrong.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.primary,
-  },
-  track: {
-    height: 8,
-    borderRadius: Tokens.radius.round,
-    backgroundColor: Tokens.color.track,
-    overflow: 'hidden',
-  },
-  fill: {
-    height: '100%',
-    borderRadius: Tokens.radius.round,
-    backgroundColor: Tokens.color.primary,
-  },
-  planCaption: {
-    fontSize: Tokens.typography.caption.fontSize,
-    color: Tokens.color.textSoft,
-  },
-  sectionTitle: {
-    fontSize: Tokens.typography.section.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.textStrong,
-  },
-  quickRow: {
-    flexDirection: 'row',
-    gap: Tokens.space.lg,
-  },
-  quickCard: {
-    flex: 1,
-    gap: Tokens.space.xl,
-    padding: Tokens.space.lg,
-    borderRadius: Tokens.radius.xl,
-    backgroundColor: Tokens.color.primaryTint,
-    minHeight: 120,
-    justifyContent: 'space-between',
-  },
-  quickLabel: {
-    fontSize: Tokens.typography.bodyStrong.fontSize,
-    fontWeight: '700',
-    color: Tokens.color.textStrong,
-  },
-});
